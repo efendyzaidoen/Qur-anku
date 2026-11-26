@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qur'anKu - Versi 1.0</title>
+<link rel="icon" type="image/png" href="quranku-icon.png">
+<link rel="shortcut icon" type="image/png" href="quranku-icon.png">
+<link rel="apple-touch-icon" href="quranku-icon.png">
+<meta name="theme-color" content="#0B3D2E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Qur'anKu">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Qur'anKu Versi 1.0 - Al-Qur'an Offline, Jadwal Sholat, Kompas Kiblat">
+<link rel="manifest" href="data:application/json,[STRIPPED]
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#F6F1E7;--card:#FFFFFF;--card2:#EEEEEE;--text:#1A1A1A;--muted:#777;--border:#DDD;--arab-size:34px;--gold:#C9A227;--teal:#2EC4B6}
+body.dark{--bg:#121212;--card:#1E1E1E;--card2:#222222;--text:#EDEDED;--muted:#999;--border:#2A2A2A}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+svg.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.version-badge{display:inline-block;background:rgba(201,162,39,.2);border:1px solid #C9A227;color:#C9A227;font-size:10px;padding:2px 8px;border-radius:99px;letter-spacing:1px;margin-top:8px}
+#splash{position:fixed;inset:0;background:#0A0A0A;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+#splash.hide{opacity:0;visibility:hidden}
+.splash-logo{animation:floatGlow 2s ease-in-out infinite;text-align:center}
+@keyframes floatGlow{0%,100%{transform:translateY(0) scale(1);filter:drop-shadow(0 0 10px rgba(201,162,39,.4))}50%{transform:translateY(-8px) scale(1.03);filter:drop-shadow(0 0 24px rgba(201,162,39,.9))}}
+.splash-bar{width:140px;height:4px;background:#333;border-radius:99px;overflow:hidden;margin-top:16px}.splash-bar i{display:block;height:100%;background:#C9A227;animation:load 1.6s ease forwards}@keyframes load{from{width:0}to{width:100%}}
+.page{display:none;max-width:430px;margin:0 auto;min-height:100vh}.page.active{display:block}
+.menu{padding:14px 20px 20px;min-height:100vh;background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.6)),url('https://images.unsplash.com/photo-1542816417-0983c9c9a53d?w=800&q=80') center/cover}
+.menu-top{display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:13px}
+.menu-top span{font-size:11px;opacity:.8;display:flex;align-items:center;gap:6px}
+.logo-center{text-align:center;margin:28px 0 24px;color:#fff}
+.logo-center h1{font-family:'Amiri',serif;font-size:30px;color:#D8B98A;line-height:1.1;margin-top:8px}
+.logo-center p{font-size:11px;letter-spacing:3px;color:#2EC4B6;margin-top:6px}
+.menu-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:rgba(0,0,0,.35);backdrop-filter:blur(10px);border:1.5px solid #fff;color:#fff;padding:13px 14px;border-radius:12px;font-size:15px;margin-bottom:11px;cursor:pointer;letter-spacing:.5px}
+.menu-btn:active{background:rgba(201,162,39,.25)}
+.menu-btn .left{display:flex;align-items:center;gap:10px}.menu-btn .left svg{width:20px;height:20px}
+.menu-foot{text-align:center;font-size:11px;color:rgba(255,255,255,.6);margin-top:16px;line-height:1.6}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:20}
+.topbar button{background:none;border:none;color:var(--text);font-size:22px;cursor:pointer}
+.topbar h2{font-size:16px}.topbar small{font-size:12px;color:var(--muted)}
+.topbar .right{margin-left:auto;display:flex;gap:14px}.topbar .right span{cursor:pointer;display:flex}
+.tabs{display:flex;gap:22px;padding:10px 16px;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap}
+.tabs span{font-size:14px;color:var(--muted);cursor:pointer}.tabs span.active{color:var(--text);border-bottom:2px solid var(--gold)}
+.banner{margin:14px 16px;background:#0B3D2E;border:2px solid var(--gold);border-radius:6px;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;color:#fff}
+.banner h3{font-family:'Amiri',serif;font-size:24px;text-align:center;line-height:1}
+.banner small{display:block;font-size:11px;color:var(--gold);text-align:center}
+.ayat{padding:16px;border-bottom:1px solid var(--border)}
+.ayat-top{display:flex;gap:14px;align-items:flex-start}
+.ayat-num{width:38px;height:46px;flex-shrink:0;background:var(--card2);border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;clip-path:polygon(50% 0%,100% 15%,100% 85%,50% 100%,0% 85%,0% 15%);margin-top:6px}
+.arab-big{font-family:'Scheherazade New','Amiri',serif;font-size:var(--arab-size);line-height:1.9;text-align:right;direction:rtl;flex:1}
+.arab-big .tj-qalqalah{color:#FF5252}.arab-big .tj-ghunnah{color:#B388FF}.arab-big .tj-mad{color:#FFAB40}
+.latin{color:var(--teal);font-size:15px;margin:10px 0 6px;padding-left:52px;line-height:1.5}
+.arti{color:var(--muted);font-size:15px;line-height:1.6;padding-left:52px}
+.words{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px;padding-left:52px}
+.word-chip{background:var(--card2);border-radius:10px;padding:8px 12px;text-align:center;min-width:68px}
+.word-chip b{display:block;font-family:'Amiri',serif;font-size:20px;color:#D8B98A;font-weight:400}
+.word-chip span{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.ayat-actions{display:flex;gap:8px;padding-left:52px;margin-top:10px}
+.mini{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:9px 13px;border-radius:99px;font-size:12px;cursor:pointer;min-width:70px;display:inline-flex;align-items:center;gap:6px}
+.mini.active{background:var(--gold);color:#121212;border-color:var(--gold);font-weight:700}
+.mini.gold{background:var(--gold);color:#121212;border-color:var(--gold);font-weight:700}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;margin:14px 16px;padding:16px}
+.card p{font-size:13px;color:var(--muted);line-height:1.6}
+.search-box{margin:14px 16px}.search-box input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:13px;border-radius:12px;outline:none}
+.surah-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);margin:0 16px 8px;padding:13px;border-radius:12px;cursor:pointer}
+.surah-row small{font-size:11px;color:var(--muted)}.surah-row .arab{font-family:'Amiri',serif;font-size:22px;margin-left:auto;color:#C9A227}
+.prayer{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 16px}.p-item{background:var(--card);border:1px solid var(--border);padding:12px;border-radius:12px;text-align:center}.p-item b{display:block}.p-item span{font-size:11px;color:var(--muted)}
+.btn-gold{background:var(--gold);color:#121212;border:none;width:100%;padding:13px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);padding:11px;border-radius:12px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+select{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px;border-radius:12px;outline:none;margin-top:8px}
+.circle{width:200px;height:200px;border:4px solid var(--gold);border-radius:50%;margin:16px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,#145A44,#0B3D2E);cursor:pointer;color:#fff}.circle b{font-size:52px}
+.switch{width:52px;height:30px;background:#ccc;border-radius:99px;position:relative;cursor:pointer;flex-shrink:0;border:none}.switch.on{background:#34C759}.switch i{position:absolute;top:3px;left:3px;width:24px;height:24px;background:#fff;border-radius:50%;transition:.2s}.switch.on i{left:25px}
+.tajwid-box{background:var(--card);border:1px solid var(--gold);border-radius:12px;margin:0 16px 10px;padding:10px;font-size:11px;line-height:1.7;color:var(--muted)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;padding:20px}.modal.show{display:block}.modal-box{background:var(--card);color:var(--text);max-width:400px;margin:20px auto;padding:20px;border-radius:18px;font-size:13px;line-height:1.7}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1A1A1A;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;z-index:2000;display:none;white-space:nowrap}.toast.show{display:block}
+input[type=range]{width:100%;margin:12px 0;accent-color:#C9A227}
+.preview-arab{font-family:'Amiri',serif;text-align:right;font-size:var(--arab-size);line-height:1.8;background:var(--card2);padding:12px;border-radius:12px;margin-top:10px;direction:rtl}
+.compass-wrap{width:240px;height:240px;margin:18px auto;position:relative;border-radius:50%;background:radial-gradient(circle,#1E1E1E,#0A0A0A);border:2px solid var(--gold);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.compass-dial{position:absolute;inset:0;transition:transform .15s linear}
+.compass-needle{position:absolute;left:50%;top:18px;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:90px solid #C9A227}
+.compass-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:62px;background:#0B3D2E;border:2px solid #C9A227;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;text-align:center;line-height:1.2}
+.compass-label{position:absolute;left:50%;top:8px;transform:translateX(-50%);font-size:11px;color:var(--gold);font-weight:700;letter-spacing:2px}
+.accuracy{font-size:11px;padding:4px 10px;border-radius:99px;display:inline-block;margin-top:6px}.accuracy.good{background:#34C75933;color:#34C759}.accuracy.bad{background:#FF3B3033;color:#FF3B30}.accuracy.mid{background:#FF950033;color:#FF9500}
+.rek-num{color:var(--text)!important;text-decoration:none!important;-webkit-text-fill-color:var(--text)!important}
+</style>
+</head>
+<body>
+<div id="splash">
+<div class="splash-logo">
+<svg width="72" height="72" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0B3D2E" stroke="#C9A227" stroke-width="2"/><path d="M32 14 L14 20 V44 L32 38 L50 44 V20 Z" fill="none" stroke="#C9A227" stroke-width="2.5"/><path d="M32 14 V38" stroke="#C9A227" stroke-width="2"/><circle cx="32" cy="49" r="3" fill="#C9A227"/></svg>
+<p style="font-family:'Amiri',serif;font-size:28px;color:#D8B98A;margin-top:10px">القرآن الكريم</p>
+<p style="color:#2EC4B6;font-size:11px;letter-spacing:3px;margin-top:2px">QUR'ANKU</p>
+<span class="version-badge">VERSI 1.0</span>
+</div>
+<div class="splash-bar"><i></i></div>
+<p style="color:#888;font-size:11px;margin-top:10px">Memuat Al-Qur'an...</p>
+</div>
+
+<div id="page-menu" class="page active">
+<div class="menu">
+<div class="menu-top"><span><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> Cari</span><span id="themeLabel">Tema: Mengikuti HP</span></div>
+<div class="logo-center">
+<svg width="48" height="48" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0B3D2E" stroke="#C9A227" stroke-width="2"/><path d="M32 14 L14 20 V44 L32 38 L50 44 V20 Z" fill="none" stroke="#C9A227" stroke-width="2.5"/><path d="M32 14 V38" stroke="#C9A227" stroke-width="2"/><circle cx="32" cy="49" r="3" fill="#C9A227"/></svg>
+<!-- REVISI: BADGE VERSI 1.0 DI HALAMAN UTAMA UDAH DIHAPUS -->
+<h1>القرآن الكريم</h1><p>QUR'ANKU</p></div>
+<button class="menu-btn" onclick="showPage('quran')"><span class="left"><svg class="icon" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg> BACA QUR'AN</span><span>›</span></button>
+<button class="menu-btn" onclick="openLast()"><span class="left"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> TERAKHIR BACA</span><span>›</span></button>
+<button class="menu-btn" onclick="showPage('search')"><span class="left"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> PENCARIAN</span><span>›</span></button>
+<button class="menu-btn" onclick="showPage('sholat')"><span class="left"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> JADWAL SHOLAT</span><span>›</span></button>
+<button class="menu-btn" onclick="showPage('kompas')"><span class="left"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-2 5-4 1 2-5z"/></svg> KOMPAS KIBLAT</span><span>›</span></button>
+<button class="menu-btn" onclick="showPage('settings')"><span class="left"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1 4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> PENGATURAN</span><span>›</span></button>
+<div class="menu-foot">© 2026 Qur'anKu • Al-Qur'an Offline<br>Versi 1.0</div>
+</div>
+</div>
+
+<div id="page-quran" class="page">
+<div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2>Daftar Surah</h2><small>114 Surah • Versi 1.0</small></div><div class="right"><span onclick="showPage('search')"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span><span onclick="showPage('settings')"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4"/></svg></span></div></div>
+<div class="search-box"><input id="searchSurah" oninput="renderSurah()" placeholder="Cari: Yasin, Al-Fatihah, 36..."></div><div id="listSurah"></div>
+</div>
+
+<div id="page-search" class="page">
+<div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2>Pencarian</h2><small>Cari surah</small></div></div>
+<div class="search-box"><input id="searchGlobal" oninput="renderSearch()" placeholder="Ketik: Yasin, Al-Fatihah..."></div>
+<div id="searchResult" style="padding:0 16px"></div>
+</div>
+
+<div id="page-reader" class="page">
+<div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2 id="readerHalaman">Halaman 1</h2><small id="readerJuz">Juz 1</small></div><div class="right"><span onclick="toggleTajwidBtn()"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><circle cx="7" cy="10" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="17" cy="10" r="1"/></svg></span><span onclick="showPage('settings')"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4"/></svg></span></div></div>
+<div class="tabs" id="surahTabs"></div>
+<div class="banner"><span><svg class="icon" style="color:#fff" viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span><div><h3 id="readerSurahName">الفاتحة</h3><small id="readerSurahMeta">7 Ayat</small></div><span id="bannerRight">7 Ayat</span></div>
+<div class="tajwid-box" id="tajwidLegend"><b style="color:var(--text)">Tajwid:</b> <span style="color:#FF5252">■ Qalqalah</span> • <span style="color:#B388FF">■ Ghunnah</span> • <span style="color:#FFAB40">■ Mad</span></div>
+<div id="readerContent"></div>
+<div style="padding:0 16px 20px;display:flex;gap:8px"><button class="btn-outline" onclick="prevSurah()">‹ Sebelumnya</button><button class="btn-outline" onclick="nextSurah()">Berikutnya ›</button></div>
+</div>
+
+<div id="page-sholat" class="page">
+<div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2>Jadwal Sholat</h2><small id="dateLabel">Hari ini</small></div></div>
+<div class="card"><b id="cityLabel">Mataram, Lombok</b><p>Pilih kota, jadwal langsung muncul.</p><select id="citySelect" onchange="changeCity()"><option value="Mataram">Mataram, Lombok</option><option value="Jakarta">Jakarta</option><option value="Surabaya">Surabaya</option><option value="Bandung">Bandung</option><option value="Medan">Medan</option><option value="Makassar">Makassar</option><option value="Yogyakarta">Yogyakarta</option><option value="Denpasar">Denpasar, Bali</option><option value="Palembang">Palembang</option><option value="Balikpapan">Balikpapan</option></select><p style="font-size:20px;color:var(--text);margin-top:12px">Berikutnya: <b id="nextName" style="color:var(--gold)">Dzuhur</b> - <span id="countSholat">00:00:00</span></p><p>Countdown Buka: <b id="countPuasa" style="color:var(--teal)">00:00:00</b></p></div>
+<div class="prayer" id="prayerGrid"></div>
+<div class="card"><button class="btn-outline" onclick="showPage('kompas')"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-2 5-4 1 2-5z"/></svg> Lihat Kompas Kiblat</button></div>
+</div>
+
+<div id="page-kompas" class="page">
+<div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2>Kompas Kiblat</h2><small id="kompasCity">Mataram • Arah Ka'bah</small></div></div>
+<!-- REVISI: UTARA -> BARAT -->
+<div class="card" style="text-align:center"><p>Putar HP kamu sampai jarum emas mengarah ke atas.</p><div class="compass-wrap"><div class="compass-dial" id="compassDial"><div class="compass-label">BARAT</div><div class="compass-needle"></div></div><div class="compass-center">KA'BAH<br><span id="qiblaDeg" style="font-size:14px;color:#C9A227">295°</span></div></div><h3 id="kompasStatus" style="margin-top:8px">Arah Kiblat: 295° dari Barat</h3><p id="kompasHint">Belum aktif. Pencet Aktifkan Kompas di bawah.</p><span class="accuracy mid" id="kompasAccuracy">Akurasi: Menunggu sensor...</span><p id="gpsInfo" style="margin-top:8px">Lokasi: Mataram (kota dipilih) • Untuk akurasi maksimal, pencet Pakai GPS Saya.</p><button class="btn-gold" onclick="startCompass()"><svg class="icon" style="stroke:#121212" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-2 5-4 1 2-5z"/></svg> Aktifkan Kompas</button><button class="btn-outline" style="margin-top:8px" onclick="useGPSForQibla()">Pakai GPS Saya (Lebih Akurat)</button><button class="btn-outline" style="margin-top:8px" onclick="calibrateCompass()">Kalibrasi: Goyang HP Bentuk Angka 8</button></div>
+<div class="card"><b>Biar Akurat, Wajib Baca:</b><p>1. Jauhin HP dari magnet, speaker, casing magnet, laptop.<br>2. Letakkan HP datar, jangan miring.<br>3. Pencet Kalibrasi, goyang HP bentuk angka 8 sebanyak 3x sampai indikator jadi hijau.<br>4. Kalau masih merah, pindah tempat, jangan di deket besi / motor.</p></div>
+</div>
+
+<div id="page-settings" class="page">
+<div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2>Pengaturan</h2><small>Qur'anKu Versi 1.0</small></div></div>
+<div class="card"><b>Qur'anKu Versi 1.0</b><p>Versi pertama. Al-Qur'an Offline, Jadwal Sholat, Kompas Kiblat, Tasbih.</p><span class="version-badge">VERSI 1.0 • STABLE</span></div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><b>Tema Mengikuti HP</b><p id="themeStatus">HP kamu: Terang • App ikut terang</p></div><div class="switch on" id="themeSwitch"><i></i></div></div>
+<div class="card"><b>Bahasa Terjemahan</b><p id="langStatus">Aktif: Indonesia</p><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="mini lang-btn active" id="btnLangId" onclick="setLangFix('id')">Indonesia</button><button class="mini lang-btn" id="btnLangEn" onclick="setLangFix('en')">English</button><button class="mini lang-btn" id="btnLangAr" onclick="setLangFix('ar')">Arab Only</button></div></div>
+<div class="card"><b>Ukuran Huruf Arab: <span id="fontLabel" style="color:var(--gold)">34px</span></b><p>Geser slider atau pencet tombol, langsung berubah.</p><input type="range" id="fontSlider" min="24" max="52" value="34" oninput="setFontFix(this.value)"><div style="display:flex;gap:8px"><button class="mini" onclick="changeFontFix(-2)">A- Kecil</button><button class="mini" onclick="changeFontFix(2)">A+ Besar</button><button class="mini" onclick="setFontFix(34)">Reset 34px</button></div><div class="preview-arab" id="fontPreview">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div></div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><b>Notifikasi Adzan</b><p id="notifStatus">Aktif</p></div><button class="switch on" id="notifSwitch" onclick="toggleNotifFix()"><i></i></button></div>
+<div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><b>Warna Tajwid</b><p id="tajwidStatus">Aktif</p></div><button class="switch on" id="tajwidSwitch" onclick="toggleTajwidFix()"><i></i></button></div>
+<div class="card" onclick="openPrivacy()" style="cursor:pointer"><b>Privacy Policy</b><p>Klik untuk lihat kebijakan privasi.</p></div>
+<div class="card"><b>Infak Pengembang</b><p style="margin-top:8px;color:var(--text)">BCA: <span class="rek-num">2020604614</span><br><span style="color:var(--muted);font-size:12px">a.n Zaidun Efendi</span><br>DANA / OVO: <span class="rek-num">0819-0883-0799</span></p><button class="btn-gold" onclick="copyText('2020604614','Nomor BCA tersalin!')"><svg class="icon" style="stroke:#121212" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Salin BCA 2020604614</button><button class="btn-outline" style="margin-top:8px" onclick="copyText('081908830799','Nomor DANA tersalin!')">Salin DANA / OVO 081908830799</button><p style="font-size:11px;margin-top:8px">Pastikan nama: Zaidun Efendi sebelum transfer.</p></div>
+<div class="card" style="text-align:center"><p>© 2026 Qur'anKu • Versi 1.0</p></div>
+</div>
+
+<div id="page-tasbih" class="page">
+<div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2>Tasbih</h2><small>Target 100</small></div></div>
+<div class="card" style="text-align:center"><p>SUBHANALLAH</p><div class="circle" onclick="addTasbih()"><b id="tasbihBig">0</b><span style="font-size:12px">dari 100 • Tap</span></div><p id="tasbihText">0%</p><button class="btn-gold" onclick="addTasbih()">+ TAP DZIKIR</button><button class="btn-outline" style="margin-top:8px" onclick="resetTasbih()">Reset</button></div>
+</div>
+
+<div class="modal" id="adzanModal"><div class="modal-box" style="text-align:center"><h2>Waktu <span id="adzanName">Dzuhur</span></h2><p id="adzanTime"></p><button class="btn-gold" onclick="closeAdzan()">Siap Sholat</button></div></div>
+<div class="modal" id="privacyModal"><div class="modal-box"><button onclick="closePrivacy()" style="float:right;background:#888;color:#fff;border:none;padding:6px 12px;border-radius:99px">✕</button><h2>Privacy Policy - Qur'anKu Versi 1.0</h2><p style="margin-top:10px">Qur'anKu Versi 1.0 TIDAK kumpulkan data pribadi. Lokasi hanya di HP untuk jadwal sholat & kompas kiblat.</p><p>© 2026 Qur'anKu • Versi 1.0</p></div></div>
+<div class="toast" id="toast"></div>
+<audio id="audioPlayer" style="display:none"></audio>
+
+<script>
+setTimeout(()=>document.getElementById('splash').classList.add('hide'),1600);
+function showToast(msg){let t=document.getElementById('toast');t.innerText=msg;t.classList.add('show');clearTimeout(window._toastT);window._toastT=setTimeout(()=>t.classList.remove('show'),2000);}
+function applyThemeFromPhone(){let isDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.body.classList.toggle('dark',isDark);document.getElementById('themeStatus').innerText=isDark?'HP kamu: Gelap • App ikut gelap':'HP kamu: Terang • App ikut terang';document.getElementById('themeLabel').innerText=isDark?'Tema: Gelap (HP)':'Tema: Terang (HP)';document.getElementById('themeSwitch').classList.toggle('on',isDark);}
+applyThemeFromPhone();if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{applyThemeFromPhone();showToast('Tema ikut HP');});
+document.getElementById('themeSwitch').addEventListener('click',()=>{showToast('Ubah di Pengaturan HP → Tampilan');});
+let currentLang=localStorage.getItem('quranku_lang')||'id';
+let arabSize=parseInt(localStorage.getItem('quranku_font')||'34');
+let tajwidOn=localStorage.getItem('quranku_tajwid')!=='off';
+let currentSurah=1;let notifOn=localStorage.getItem('quranku_notif')!=='off';
+function applyFontFix(){document.documentElement.style.setProperty('--arab-size',arabSize+'px');document.getElementById('fontLabel').innerText=arabSize+'px';document.getElementById('fontSlider').value=arabSize;document.getElementById('fontPreview').style.fontSize=arabSize+'px';document.querySelectorAll('.arab-big').forEach(el=>el.style.fontSize=arabSize+'px');localStorage.setItem('quranku_font',arabSize);}
+function setFontFix(v){arabSize=parseInt(v);applyFontFix();showToast('Ukuran Arab: '+arabSize+'px');}
+function changeFontFix(d){arabSize=Math.max(24,Math.min(52,arabSize+d));applyFontFix();showToast('Ukuran Arab: '+arabSize+'px');}
+applyFontFix();
+function setLangFix(l){currentLang=l;localStorage.setItem('quranku_lang',l);document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btnLangId').classList.toggle('active',l==='id');document.getElementById('btnLangEn').classList.toggle('active',l==='en');document.getElementById('btnLangAr').classList.toggle('active',l==='ar');document.getElementById('langStatus').innerText='Aktif: '+(l==='id'?'Indonesia':l==='en'?'English':'Arab Only');showToast('Bahasa: '+(l==='id'?'Indonesia':l==='en'?'English':'Arab Only'));if(document.getElementById('page-reader').classList.contains('active')) openSurah(currentSurah,true);}
+setLangFix(currentLang);
+function syncSwitches(){document.getElementById('notifSwitch').classList.toggle('on',notifOn);document.getElementById('tajwidSwitch').classList.toggle('on',tajwidOn);document.getElementById('notifStatus').innerText=notifOn?'Aktif • Bunyi saat masuk waktu sholat':'Nonaktif';document.getElementById('tajwidStatus').innerText=tajwidOn?'Aktif':'Nonaktif';document.getElementById('tajwidLegend').style.display=tajwidOn?'block':'none';}
+function toggleNotifFix(){notifOn=!notifOn;localStorage.setItem('quranku_notif',notifOn?'on':'off');syncSwitches();showToast(notifOn?'Notifikasi Adzan ON':'Notifikasi Adzan OFF');}
+function toggleTajwidFix(){tajwidOn=!tajwidOn;localStorage.setItem('quranku_tajwid',tajwidOn?'on':'off');syncSwitches();showToast(tajwidOn?'Warna Tajwid ON':'Warna Tajwid OFF');if(document.getElementById('page-reader').classList.contains('active')) openSurah(currentSurah,true);}
+function toggleTajwidBtn(){toggleTajwidFix();} syncSwitches();
+function openPrivacy(){document.getElementById('privacyModal').classList.add('show')} function closePrivacy(){document.getElementById('privacyModal').classList.remove('show')}
+function showAdzan(n,t){if(!notifOn) return;document.getElementById('adzanName').innerText=n;document.getElementById('adzanTime').innerText='Pukul '+t;document.getElementById('adzanModal').classList.add('show');}
+function closeAdzan(){document.getElementById('adzanModal').classList.remove('show')}
+let notified={}; function copyText(t,m){if(navigator.clipboard) navigator.clipboard.writeText(t).then(()=>showToast(m)); else prompt('Salin:',t);}
+const surahs=[[1,"Al-Fatihah","الفاتحة",7,"Pembukaan"],[2,"Al-Baqarah","البقرة",286,"Sapi Betina"],[3,"Ali 'Imran","آل عمران",200,"Keluarga Imran"],[4,"An-Nisa'","النساء",176,"Wanita"],[5,"Al-Ma'idah","المائدة",120,"Hidangan"],[6,"Al-An'am","الأنعام",165,"Binatang Ternak"],[7,"Al-A'raf","الأعراف",206,"Tempat Tertinggi"],[8,"Al-Anfal","الأنفال",75,"Rampasan Perang"],[9,"At-Taubah","التوبة",129,"Pengampunan"],[10,"Yunus","يونس",109,"Nabi Yunus"],[11,"Hud","هود",123,"Nabi Hud"],[12,"Yusuf","يوسف",111,"Nabi Yusuf"],[13,"Ar-Ra'd","الرعد",43,"Guruh"],[14,"Ibrahim","ابراهيم",52,"Nabi Ibrahim"],[15,"Al-Hijr","الحجر",99,"Kaum Hijr"],[16,"An-Nahl","النحل",128,"Lebah"],[17,"Al-Isra'","الإسراء",111,"Memperjalankan Malam"],[18,"Al-Kahf","الكهف",110,"Gua"],[19,"Maryam","مريم",98,"Maryam"],[20,"Taha","طه",135,"Taha"],[21,"Al-Anbiya'","الأنبياء",112,"Para Nabi"],[22,"Al-Hajj","الحج",78,"Haji"],[23,"Al-Mu'minun","المؤمنون",118,"Orang Mukmin"],[24,"An-Nur","النور",64,"Cahaya"],[25,"Al-Furqan","الفرقان",77,"Pembeda"],[26,"Asy-Syu'ara'","الشعراء",227,"Penyair"],[27,"An-Naml","النمل",93,"Semut"],[28,"Al-Qasas","القصص",88,"Kisah"],[29,"Al-'Ankabut","العنكبوت",69,"Laba-Laba"],[30,"Ar-Rum","الروم",60,"Romawi"],[31,"Luqman","لقمان",34,"Luqman"],[32,"As-Sajdah","السجدة",30,"Sujud"],[33,"Al-Ahzab","الأحزاب",73,"Golongan Bersekutu"],[34,"Saba'","سبأ",54,"Kaum Saba"],[35,"Fatir","فاطر",45,"Pencipta"],[36,"Yasin","يس",83,"Yasin"],[37,"As-Saffat","الصافات",182,"Yang Bersaf"],[38,"Sad","ص",88,"Sad"],[39,"Az-Zumar","الزمر",75,"Rombongan"],[40,"Gafir","غافر",85,"Maha Pengampun"],[41,"Fussilat","فصلت",54,"Dijelaskan"],[42,"Asy-Syura","الشورى",53,"Musyawarah"],[43,"Az-Zukhruf","الزخرف",89,"Perhiasan Emas"],[44,"Ad-Dukhan","الدخان",59,"Kabut"],[45,"Al-Jasiyah","الجاثية",37,"Berlutut"],[46,"Al-Ahqaf","الأحقاف",35,"Bukit Pasir"],[47,"Muhammad","محمد",38,"Nabi Muhammad"],[48,"Al-Fath","الفتح",29,"Kemenangan"],[49,"Al-Hujurat","الحجرات",18,"Kamar-Kamar"],[50,"Qaf","ق",45,"Qaf"],[51,"Az-Zariyat","الذاريات",60,"Angin"],[52,"At-Tur","الطور",49,"Bukit Tursina"],[53,"An-Najm","النجم",62,"Bintang"],[54,"Al-Qamar","القمر",55,"Bulan"],[55,"Ar-Rahman","الرحمن",78,"Maha Pengasih"],[56,"Al-Waqi'ah","الواقعة",96,"Hari Kiamat"],[57,"Al-Hadid","الحديد",29,"Besi"],[58,"Al-Mujadalah","المجادلة",22,"Penggugat"],[59,"Al-Hasyr","الحشر",24,"Pengusiran"],[60,"Al-Mumtahanah","الممتحنة",13,"Wanita Diuji"],[61,"As-Saff","الصف",14,"Barisan"],[62,"Al-Jumu'ah","الجمعة",11,"Jumat"],[63,"Al-Munafiqun","المنافقون",11,"Munafik"],[64,"At-Tagabun","التغابن",18,"Pengungkapan"],[65,"At-Talaq","الطلاق",12,"Talak"],[66,"At-Tahrim","التحريم",12,"Pengharaman"],[67,"Al-Mulk","الملك",30,"Kerajaan"],[68,"Al-Qalam","القلم",52,"Pena"],[69,"Al-Haqqah","الحاقة",52,"Hari Kiamat"],[70,"Al-Ma'arij","المعارج",44,"Tempat Naik"],[71,"Nuh","نوح",28,"Nabi Nuh"],[72,"Al-Jinn","الجن",28,"Jin"],[73,"Al-Muzzammil","المزمل",20,"Berselimut"],[74,"Al-Muddassir","المدثر",56,"Berkemul"],[75,"Al-Qiyamah","القيامة",40,"Kiamat"],[76,"Al-Insan","الإنسان",31,"Manusia"],[77,"Al-Mursalat","المرسلات",50,"Malaikat Diutus"],[78,"An-Naba'","النبأ",40,"Berita Besar"],[79,"An-Nazi'at","النازعات",46,"Malaikat Mencabut"],[80,"'Abasa","عبس",42,"Bermuka Masam"],[81,"At-Takwir","التكوير",29,"Penggulungan"],[82,"Al-Infitar","الإنفطار",19,"Terbelah"],[83,"Al-Mutaffifin","المطففين",36,"Curang"],[84,"Al-Insyiqaq","الإنشقاق",25,"Terbelah"],[85,"Al-Buruj","البروج",22,"Gugusan Bintang"],[86,"At-Tariq","الطارق",17,"Yang Datang Malam"],[87,"Al-A'la","الأعلى",19,"Maha Tinggi"],[88,"Al-Gasyiyah","الغاشية",26,"Hari Pembalasan"],[89,"Al-Fajr","الفجر",30,"Fajar"],[90,"Al-Balad","البلد",20,"Negeri"],[91,"Asy-Syams","الشمس",15,"Matahari"],[92,"Al-Lail","الليل",21,"Malam"],[93,"Ad-Duha","الضحى",11,"Waktu Duha"],[94,"Asy-Syarh","الشرح",8,"Lapang"],[95,"At-Tin","التين",8,"Buah Tin"],[96,"Al-'Alaq","العلق",19,"Segumpal Darah"],[97,"Al-Qadr","القدر",5,"Kemuliaan"],[98,"Al-Bayyinah","البينة",8,"Bukti Nyata"],[99,"Az-Zalzalah","الزلزلة",8,"Guncangan"],[100,"Al-'Adiyat","العاديات",11,"Kuda Perang"],[101,"Al-Qari'ah","القارعة",11,"Hari Kiamat"],[102,"At-Takasur","التكاثر",8,"Bermegah-Megahan"],[103,"Al-'Asr","العصر",3,"Masa"],[104,"Al-Humazah","الهمزة",9,"Pengumpat"],[105,"Al-Fil","الفيل",5,"Gajah"],[106,"Quraisy","قريش",4,"Suku Quraisy"],[107,"Al-Ma'un","الماعون",7,"Barang Berguna"],[108,"Al-Kausar","الكوثر",3,"Nikmat Banyak"],[109,"Al-Kafirun","الكافرون",6,"Orang Kafir"],[110,"An-Nasr","النصر",3,"Pertolongan"],[111,"Al-Lahab","المسد",5,"Sabut Api"],[112,"Al-Ikhlas","الإخلاص",4,"Ikhlas"],[113,"Al-Falaq","الفلق",5,"Waktu Subuh"],[114,"An-Nas","الناس",6,"Manusia"]];
+const WORD_DATA={1:[[{a:"بِسْمِ",m:"dengan nama"},{a:"اللَّهِ",m:"Allah"},{a:"الرَّحْمَٰنِ",m:"Maha Pengasih"},{a:"الرَّحِيمِ",m:"Maha Penyayang"}],[{a:"الْحَمْدُ",m:"pujian"},{a:"لِلَّهِ",m:"bagi Allah"},{a:"رَبِّ",m:"Tuhan"},{a:"الْعَالَمِينَ",m:"alam semesta"}],[{a:"الرَّحْمَٰنِ",m:"Maha Pengasih"},{a:"الرَّحِيمِ",m:"Maha Penyayang"}],[{a:"مَالِكِ",m:"Pemilik"},{a:"يَوْمِ",m:"hari"},{a:"الدِّينِ",m:"pembalasan"}],[{a:"إِيَّاكَ",m:"hanya kepada-Mu"},{a:"نَعْبُدُ",m:"kami menyembah"},{a:"وَإِيَّاكَ",m:"dan hanya kepada-Mu"},{a:"نَسْتَعِينُ",m:"kami mohon pertolongan"}],[{a:"اهْدِنَا",m:"tunjukilah kami"},{a:"الصِّرَاطَ",m:"jalan"},{a:"الْمُسْتَقِيمَ",m:"yang lurus"}],[{a:"صِرَاطَ",m:"jalan"},{a:"الَّذِينَ",m:"orang-orang yang"},{a:"أَنْعَمْتَ",m:"Engkau beri nikmat"},{a:"عَلَيْهِمْ",m:"kepada mereka"},{a:"غَيْرِ",m:"bukan"},{a:"الْمَغْضُوبِ",m:"yang dimurkai"},{a:"عَلَيْهِمْ",m:"kepada mereka"},{a:"وَلَا",m:"dan bukan"},{a:"الضَّالِّينَ",m:"yang sesat"}]]};
+const LATIN_DATA={1:["bismillaahir-rohmaanir-rohiim","al-hamdu lillaahi robbil-'aalamiin","ar-rohmaanir-rohiim","maaliki yaumid-diin","iyyaaka na'budu wa iyyaaka nasta'iin","ihdinash-shiroothol-mustaqiim","shiroothol-ladziina an'amta 'alaihim ghoiril-maghdhuubi 'alaihim wa ladh-dhoolliin"]};
+const OFFLINE_AYAT={1:{arab:["بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ","الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ","الرَّحْمَٰنِ الرَّحِيمِ","مَالِكِ يَوْمِ الدِّينِ","إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ","اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ","صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"],indo:["Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang.","Segala puji bagi Allah, Tuhan seluruh alam.","Yang Maha Pengasih, Maha Penyayang.","Pemilik hari pembalasan.","Hanya kepada Engkaulah kami menyembah dan hanya kepada Engkaulah kami mohon pertolongan.","Tunjukilah kami jalan yang lurus.","(yaitu) jalan orang-orang yang telah Engkau beri nikmat kepadanya; bukan (jalan) mereka yang dimurkai, dan bukan (pula jalan) mereka yang sesat."],en:["In the name of Allah, the Most Gracious, the Most Merciful.","All praise is for Allah, Lord of all worlds.","The Most Gracious, the Most Merciful.","Master of the Day of Judgment.","You alone we worship, and You alone we ask for help.","Guide us to the straight path.","The path of those You have blessed, not of those who earned anger, nor of those who went astray."]}};
+function juzOf(n){if(n<=2) return 1; if(n<=5) return 2; if(n<=10) return 3; if(n<=20) return 4; if(n<=36) return 5; if(n<=55) return 6; if(n<=67) return 7; if(n<=78) return 8; return 9;}
+function globalAyah(s,a){let t=0;for(let i=0;i<s-1;i++) t+=surahs[i][3];return t+a;}
+function playAyah(s,a,btn){let n=globalAyah(s,a);let p=document.getElementById('audioPlayer');if(p.src.includes('/'+n+'.mp3')&&!p.paused){p.pause();btn.innerText='Play';return;}p.src=`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${n}.mp3`;p.play();btn.innerText='Pause';p.onended=()=>btn.innerText='Play';}
+function colorTajwid(txt){if(!tajwidOn) return txt;let w=txt.replace(/([ننم][\u064B-\u0652]*ّ)/g,'<span class="tj-ghunnah">$1</span>');w=w.replace(/([قطبجد][\u064B-\u0652]*ْ)/g,'<span class="tj-qalqalah">$1</span>');w=w.replace(/(ٰ)/g,'<span class="tj-mad">$1</span>');return w;}
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');window.scrollTo(0,0);if(p==='kompas') updateQibla();}
+function openLast(){let last=JSON.parse(localStorage.getItem('quranku_last')||'{"n":1}');openSurah(last.n);}
+function renderSurah(){let q=(document.getElementById('searchSurah').value||'').toLowerCase();let html='';surahs.filter(s=>(s[1].toLowerCase().includes(q)||String(s[0])===q)).forEach(s=>{html+=`<div class="surah-row" onclick="openSurah(${s[0]})"><div><b>${s[0]}. ${s[1]}</b><br><small>${s[4]} • ${s[3]} Ayat • Juz ${juzOf(s[0])}</small></div><div class="arab">${s[2]}</div></div>`;});document.getElementById('listSurah').innerHTML=html;}
+renderSurah();
+function renderSearch(){let q=(document.getElementById('searchGlobal').value||'').toLowerCase();if(!q){document.getElementById('searchResult').innerHTML='<p style="color:var(--muted)">Ketik nama surah...</p>';return;}let f=surahs.filter(s=>s[1].toLowerCase().includes(q)||String(s[0])===q);document.getElementById('searchResult').innerHTML=f.map(s=>`<div class="surah-row" onclick="openSurah(${s[0]})"><div><b>${s[0]}. ${s[1]}</b><br><small>${s[4]}</small></div><div class="arab">${s[2]}</div></div>`).join('')||'<p>Tidak ketemu.</p>';}
+let tasbih=parseInt(localStorage.getItem('quranku_tasbih')||'0');function updateTasbih(){document.getElementById('tasbihBig').innerText=tasbih;document.getElementById('tasbihText').innerText=tasbih+'%';} updateTasbih();
+function addTasbih(){if(tasbih<100){tasbih++;localStorage.setItem('quranku_tasbih',tasbih);}updateTasbih();}
+function resetTasbih(){tasbih=0;localStorage.setItem('quranku_tasbih','0');updateTasbih();}
+function prevSurah(){if(currentSurah>1) openSurah(currentSurah-1);} function nextSurah(){if(currentSurah<114) openSurah(currentSurah+1);}
+async function openSurah(n,keep){currentSurah=n;let s=surahs.find(x=>x[0]===n);localStorage.setItem('quranku_last',JSON.stringify({n,name:s[1]}));showPage('reader');document.getElementById('readerHalaman').innerText='Halaman '+n;document.getElementById('readerJuz').innerText='Juz '+juzOf(n);document.getElementById('readerSurahName').innerText=s[2];document.getElementById('readerSurahMeta').innerText=s[4]+' • '+s[3]+' Ayat';document.getElementById('bannerRight').innerText=s[3]+' Ayat';let tabs='';[Math.max(1,n-1),n,Math.min(114,n+1)].forEach(t=>{let ts=surahs.find(x=>x[0]===t);tabs+=`<span class="${t===n?'active':''}" onclick="openSurah(${t})">${t}. ${ts[1]}</span>`;});document.getElementById('surahTabs').innerHTML=tabs;if(!keep) document.getElementById('readerContent').innerHTML='<p style="padding:20px;color:var(--muted)">Memuat...</p>';try{let ed=currentLang==='en'?'en.sahih':'id.indonesian';let r=await fetch(`https://api.alquran.cloud/v1/surah/${n}/editions/quran-uthmani,${ed}`);let j=await r.json();renderAyat(j.data[0].ayahs.map(a=>a.text),j.data[1].ayahs.map(a=>a.text));}catch(e){if(OFFLINE_AYAT[n]) renderAyat(OFFLINE_AYAT[n].arab,currentLang==='en'?OFFLINE_AYAT[n].en:OFFLINE_AYAT[n].indo);else document.getElementById('readerContent').innerHTML='<p style="padding:20px">Gagal, cek internet.</p>';}}
+function renderAyat(arab,trans){let html='';arab.forEach((a,i)=>{let words='';if(WORD_DATA[currentSurah]&&WORD_DATA[currentSurah][i]){words=`<div class="words">${WORD_DATA[currentSurah][i].map(w=>`<div class="word-chip"><b>${w.a}</b><span>${w.m}</span></div>`).join('')}</div>`;}else{let ws=a.split(' ');words=`<div class="words">${ws.slice(0,6).map(w=>`<div class="word-chip"><b>${w}</b><span>...</span></div>`).join('')}</div>`;}let latin=LATIN_DATA[currentSurah]?LATIN_DATA[currentSurah][i]||'':'';html+=`<div class="ayat"><div class="ayat-top"><div class="ayat-num">${i+1}</div><div class="arab-big" style="font-size:${arabSize}px">${colorTajwid(a)}</div></div>${latin?`<div class="latin">${latin}</div>`:''}${currentLang!=='ar'?`<div class="arti">${trans[i]||''}</div>`:''}${words}<div class="ayat-actions"><button class="mini gold" onclick="playAyah(${currentSurah},${i+1},this)">Play</button></div></div>`;});document.getElementById('readerContent').innerHTML=html;}
+let city='Mataram';
+let gpsPos=null;
+const CITY_DATA={"Mataram":{lat:-8.583,lon:116.113,label:"Mataram, Lombok"},"Jakarta":{lat:-6.208,lon:106.845,label:"Jakarta"},"Surabaya":{lat:-7.257,lon:112.752,label:"Surabaya"},"Bandung":{lat:-6.917,lon:107.619,label:"Bandung"},"Medan":{lat:3.595,lon:98.672,label:"Medan"},"Makassar":{lat:-5.147,lon:119.432,label:"Makassar"},"Yogyakarta":{lat:-7.795,lon:110.369,label:"Yogyakarta"},"Denpasar":{lat:-8.65,lon:115.217,label:"Denpasar, Bali"},"Palembang":{lat:-2.976,lon:104.775,label:"Palembang"},"Balikpapan":{lat:-1.237,lon:116.852,label:"Balikpapan"}};
+const CITY_TIMES={"Mataram":{Imsak:"04:36",Fajr:"04:46",Sunrise:"06:02",Dhuhr:"11:56",Asr:"15:20",Maghrib:"18:19",Isha:"19:32"},"Jakarta":{Imsak:"04:25",Fajr:"04:35",Sunrise:"05:53",Dhuhr:"11:57",Asr:"15:18",Maghrib:"18:07",Isha:"19:19"},"Surabaya":{Imsak:"04:08",Fajr:"04:18",Sunrise:"05:34",Dhuhr:"11:34",Asr:"14:55",Maghrib:"17:44",Isha:"18:56"},"Bandung":{Imsak:"04:22",Fajr:"04:32",Sunrise:"05:50",Dhuhr:"11:55",Asr:"15:16",Maghrib:"18:05",Isha:"19:17"},"Medan":{Imsak:"04:48",Fajr:"04:58",Sunrise:"06:15",Dhuhr:"12:22",Asr:"15:43",Maghrib:"18:27",Isha:"19:39"},"Makassar":{Imsak:"04:38",Fajr:"04:48",Sunrise:"06:03",Dhuhr:"12:04",Asr:"15:25",Maghrib:"18:13",Isha:"19:25"},"Yogyakarta":{Imsak:"04:16",Fajr:"04:26",Sunrise:"05:43",Dhuhr:"11:48",Asr:"15:09",Maghrib:"17:58",Isha:"19:10"},"Denpasar":{Imsak:"04:43",Fajr:"04:53",Sunrise:"06:09",Dhuhr:"12:03",Asr:"15:27",Maghrib:"18:26",Isha:"19:38"},"Palembang":{Imsak:"04:30",Fajr:"04:40",Sunrise:"05:58",Dhuhr:"12:01",Asr:"15:22",Maghrib:"18:12",Isha:"19:24"},"Balikpapan":{Imsak:"04:38",Fajr:"04:48",Sunrise:"06:02",Dhuhr:"12:11",Asr:"15:33",Maghrib:"18:18",Isha:"19:30"}};
+let times={...CITY_TIMES["Mataram"]};
+function qiblaBearing(lat,lon){let kaabaLat=21.4225*Math.PI/180,kaabaLon=39.8262*Math.PI/180;let la=lat*Math.PI/180,lo=lon*Math.PI/180;let dLon=kaabaLon-lo;let y=Math.sin(dLon)*Math.cos(kaabaLat);let x=Math.cos(la)*Math.sin(kaabaLat)-Math.sin(la)*Math.cos(kaabaLat)*Math.cos(dLon);let br=Math.atan2(y,x)*180/Math.PI;return Math.round((br+360)%360);}
+function getCurrentPos(){return gpsPos || (CITY_DATA[city]||CITY_DATA["Mataram"]);}
+function updateQibla(){let c=getCurrentPos();let b=qiblaBearing(c.lat,c.lon);document.getElementById('qiblaDeg').innerText=b+'°';document.getElementById('kompasStatus').innerText='Arah Kiblat: '+b+'° dari Barat • '+(gpsPos?'GPS Saya':(CITY_DATA[city]||{}).label||city);document.getElementById('kompasCity').innerText=(gpsPos?'GPS Saya':(CITY_DATA[city]||{}).label||city)+' • Arah Ka\'bah';document.getElementById('gpsInfo').innerText='Lokasi: '+(gpsPos?gpsPos.lat.toFixed(4)+', '+gpsPos.lon.toFixed(4)+' (GPS akurat)':(CITY_DATA[city]||{}).label+' (kota dipilih) • Untuk akurasi maksimal, pencet Pakai GPS Saya.');}
+function useGPSForQibla(){if(!navigator.geolocation){showToast('GPS tidak didukung');return;}showToast('Mengambil GPS...');navigator.geolocation.getCurrentPosition(p=>{gpsPos={lat:p.coords.latitude,lon:p.coords.longitude};updateQibla();showToast('GPS dapat, kiblat dihitung ulang');},()=>showToast('Izin GPS ditolak, pakai kota yang dipilih'),{enableHighAccuracy:true,timeout:8000});}
+function calibrateCompass(){showToast('Goyang HP bentuk angka 8 sebanyak 3x...');document.getElementById('kompasAccuracy').className='accuracy mid';document.getElementById('kompasAccuracy').innerText='Kalibrasi: Goyang HP bentuk angka 8...';setTimeout(()=>{document.getElementById('kompasAccuracy').className='accuracy good';document.getElementById('kompasAccuracy').innerText='Akurasi: Baik • Sudah dikalibrasi';showToast('Kalibrasi selesai');},3000);}
+let smoothHeading=null; let compassActive=false;
+function startCompass(){
+  if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
+    DeviceOrientationEvent.requestPermission().then(p=>{if(p==='granted'){attachCompass();}else showToast('Izin sensor ditolak, pakai angka derajat');}).catch(()=>showToast('Sensor tidak didukung, pakai angka derajat'));
+  } else if('ondeviceorientationabsolute' in window || 'ondeviceorientation' in window){attachCompass();}
+  else showToast('Sensor tidak didukung, pakai angka derajat di atas');
+}
+function attachCompass(){
+  if(compassActive) return; compassActive=true;
+  showToast('Kompas aktif, letakkan HP datar');
+  document.getElementById('kompasAccuracy').className='accuracy mid';
+  document.getElementById('kompasAccuracy').innerText='Akurasi: Mengukur... Jauhi magnet';
+  if('ondeviceorientationabsolute' in window) window.addEventListener('deviceorientationabsolute',onOrient,true);
+  window.addEventListener('deviceorientation',onOrient,true);
+}
+function angleLerp(a,b,t){let d=((b-a+540)%360)-180;return (a+d*t+360)%360;}
+function onOrient(e){
+  let heading=null;
+  if(typeof e.webkitCompassHeading==='number') heading=e.webkitCompassHeading;
+  else if(e.absolute===true && typeof e.alpha==='number') heading=360-e.alpha;
+  else if(typeof e.alpha==='number' && e.alpha!==null) heading=360-e.alpha;
+  if(heading==null) return;
+  if(smoothHeading==null) smoothHeading=heading;
+  else smoothHeading=angleLerp(smoothHeading,heading,0.15);
+  let c=getCurrentPos();let b=qiblaBearing(c.lat,c.lon);
+  let rot=(b-smoothHeading+360)%360;
+  document.getElementById('compassDial').style.transform='rotate('+rot+'deg)';
+  document.getElementById('kompasHint').innerText='Heading HP: '+Math.round(smoothHeading)+'° • Kiblat: '+b+'° • Putar sampai jarum emas ke atas';
+  let acc = e.webkitCompassAccuracy!=null ? e.webkitCompassAccuracy : 15;
+  let el=document.getElementById('kompasAccuracy');
+  if(acc<10){el.className='accuracy good';el.innerText='Akurasi: Baik (±'+Math.round(acc)+'°)';}
+  else if(acc<25){el.className='accuracy mid';el.innerText='Akurasi: Sedang (±'+Math.round(acc)+'°) • Kalibrasi dulu';}
+  else {el.className='accuracy bad';el.innerText='Akurasi: Buruk • Jauhi magnet & kalibrasi';}
+}
+function changeCity(){city=document.getElementById('citySelect').value;gpsPos=null;times={...CITY_TIMES[city]};document.getElementById('cityLabel').innerText=CITY_DATA[city].label;renderPrayer();updateQibla();loadPrayerOnline();}
+function renderPrayer(){let g=`<div class="p-item"><span>Imsak</span><b>${times.Imsak}</b></div><div class="p-item"><span>Subuh</span><b>${times.Fajr}</b></div><div class="p-item"><span>Terbit</span><b>${times.Sunrise}</b></div><div class="p-item"><span>Dzuhur</span><b>${times.Dhuhr}</b></div><div class="p-item"><span>Ashar</span><b>${times.Asr}</b></div><div class="p-item"><span>Maghrib</span><b>${times.Maghrib}</b></div><div class="p-item"><span>Isya</span><b>${times.Isha}</b></div>`;document.getElementById('prayerGrid').innerHTML=g;document.getElementById('dateLabel').innerText=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});updateCountdown();}
+async function loadPrayerOnline(){try{let r=await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=Indonesia&method=20`);let j=await r.json();if(j.code===200){times={Imsak:j.data.timings.Imsak.slice(0,5),Fajr:j.data.timings.Fajr.slice(0,5),Sunrise:j.data.timings.Sunrise.slice(0,5),Dhuhr:j.data.timings.Dhuhr.slice(0,5),Asr:j.data.timings.Asr.slice(0,5),Maghrib:j.data.timings.Maghrib.slice(0,5),Isha:j.data.timings.Isha.slice(0,5)};renderPrayer();}}catch(e){}}
+function toSec(t){let p=t.split(':');return (+p[0])*3600+(+p[1])*60;}
+function updateCountdown(){let now=new Date();let nowSec=now.getHours()*3600+now.getMinutes()*60+now.getSeconds();let list=[['Imsak',times.Imsak],['Subuh',times.Fajr],['Dzuhur',times.Dhuhr],['Ashar',times.Asr],['Maghrib',times.Maghrib],['Isya',times.Isha]];let next=list.find(x=>toSec(x[1])>nowSec)||['Subuh besok',times.Fajr];let diff=toSec(next[1])-nowSec;if(diff<0)diff+=86400;let h=Math.floor(diff/3600),m=Math.floor((diff%3600)/60),s=diff%60;document.getElementById('nextName').innerText=next[0];document.getElementById('countSholat').innerText=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');let hhmm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');list.forEach(([nm,tm])=>{if(tm===hhmm&&notified[nm]!==new Date().toDateString()){notified[nm]=new Date().toDateString();showAdzan(nm,tm);}});let mdiff=toSec(times.Maghrib)-nowSec;document.getElementById('countPuasa').innerText=mdiff<0?'Sudah Buka':String(Math.floor(mdiff/3600)).padStart(2,'0')+':'+String(Math.floor((mdiff%3600)/60)).padStart(2,'0')+':'+String(mdiff%60).padStart(2,'0');}
+setInterval(updateCountdown,1000);renderPrayer();updateQibla();loadPrayerOnline();
+</script>
+</body>
+</html>
