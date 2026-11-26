@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Qur'anKu - Versi 1.0</title>
 <link rel="icon" type="image/png" href="quranku-icon.png">
 <link rel="shortcut icon" type="image/png" href="quranku-icon.png">
 <link rel="apple-touch-icon" href="quranku-icon.png">
 <meta name="theme-color" content="#0B3D2E">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Qur'anKu">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="Qur'anKu Versi 1.0 - Al-Qur'an Offline, Jadwal Sholat, Kompas Kiblat">
-<link rel="manifest" href="data:application/json,[STRIPPED]
+<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--bg:#F6F1E7;--card:#FFFFFF;--card2:#EEEEEE;--text:#1A1A1A;--muted:#777;--border:#DDD;--arab-size:34px;--gold:#C9A227;--teal:#2EC4B6}
+html{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);background:#0B3D2E}
 body.dark{--bg:#121212;--card:#1E1E1E;--card2:#222222;--text:#EDEDED;--muted:#999;--border:#2A2A2A}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding-top:constant(safe-area-inset-top)}
 svg.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .version-badge{display:inline-block;background:rgba(201,162,39,.2);border:1px solid #C9A227;color:#C9A227;font-size:10px;padding:2px 8px;border-radius:99px;letter-spacing:1px;margin-top:8px}
-#splash{position:fixed;inset:0;background:#0A0A0A;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+#splash{position:fixed;inset:0;background:#0A0A0A;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s;padding-top:env(safe-area-inset-top)}
 #splash.hide{opacity:0;visibility:hidden}
 .splash-logo{animation:floatGlow 2s ease-in-out infinite;text-align:center}
 @keyframes floatGlow{0%,100%{transform:translateY(0) scale(1);filter:drop-shadow(0 0 10px rgba(201,162,39,.4))}50%{transform:translateY(-8px) scale(1.03);filter:drop-shadow(0 0 24px rgba(201,162,39,.9))}}
 .splash-bar{width:140px;height:4px;background:#333;border-radius:99px;overflow:hidden;margin-top:16px}.splash-bar i{display:block;height:100%;background:#C9A227;animation:load 1.6s ease forwards}@keyframes load{from{width:0}to{width:100%}}
 .page{display:none;max-width:430px;margin:0 auto;min-height:100vh}.page.active{display:block}
-.menu{padding:14px 20px 20px;min-height:100vh;background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.6)),url('https://images.unsplash.com/photo-1542816417-0983c9c9a53d?w=800&q=80') center/cover}
+.menu{padding:14px 20px 20px;min-height:100vh;background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.6)),url('https://images.unsplash.com/photo-1542816417-0983c9c9a53d?w=800&q=80') center/cover;padding-top:calc(14px + env(safe-area-inset-top))}
 .menu-top{display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:13px}
 .menu-top span{font-size:11px;opacity:.8;display:flex;align-items:center;gap:6px}
 .logo-center{text-align:center;margin:28px 0 24px;color:#fff}
@@ -36,7 +39,7 @@ svg.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;s
 .menu-btn:active{background:rgba(201,162,39,.25)}
 .menu-btn .left{display:flex;align-items:center;gap:10px}.menu-btn .left svg{width:20px;height:20px}
 .menu-foot{text-align:center;font-size:11px;color:rgba(255,255,255,.6);margin-top:16px;line-height:1.6}
-.topbar{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:20}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:20}
 .topbar button{background:none;border:none;color:var(--text);font-size:22px;cursor:pointer}
 .topbar h2{font-size:16px}.topbar small{font-size:12px;color:var(--muted)}
 .topbar .right{margin-left:auto;display:flex;gap:14px}.topbar .right span{cursor:pointer;display:flex}
@@ -102,7 +105,6 @@ input[type=range]{width:100%;margin:12px 0;accent-color:#C9A227}
 <div class="menu-top"><span><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> Cari</span><span id="themeLabel">Tema: Mengikuti HP</span></div>
 <div class="logo-center">
 <svg width="48" height="48" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0B3D2E" stroke="#C9A227" stroke-width="2"/><path d="M32 14 L14 20 V44 L32 38 L50 44 V20 Z" fill="none" stroke="#C9A227" stroke-width="2.5"/><path d="M32 14 V38" stroke="#C9A227" stroke-width="2"/><circle cx="32" cy="49" r="3" fill="#C9A227"/></svg>
-<!-- REVISI: BADGE VERSI 1.0 DI HALAMAN UTAMA UDAH DIHAPUS -->
 <h1>القرآن الكريم</h1><p>QUR'ANKU</p></div>
 <button class="menu-btn" onclick="showPage('quran')"><span class="left"><svg class="icon" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg> BACA QUR'AN</span><span>›</span></button>
 <button class="menu-btn" onclick="openLast()"><span class="left"><svg class="icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> TERAKHIR BACA</span><span>›</span></button>
@@ -143,7 +145,6 @@ input[type=range]{width:100%;margin:12px 0;accent-color:#C9A227}
 
 <div id="page-kompas" class="page">
 <div class="topbar"><button onclick="showPage('menu')">‹</button><div><h2>Kompas Kiblat</h2><small id="kompasCity">Mataram • Arah Ka'bah</small></div></div>
-<!-- REVISI: UTARA -> BARAT -->
 <div class="card" style="text-align:center"><p>Putar HP kamu sampai jarum emas mengarah ke atas.</p><div class="compass-wrap"><div class="compass-dial" id="compassDial"><div class="compass-label">BARAT</div><div class="compass-needle"></div></div><div class="compass-center">KA'BAH<br><span id="qiblaDeg" style="font-size:14px;color:#C9A227">295°</span></div></div><h3 id="kompasStatus" style="margin-top:8px">Arah Kiblat: 295° dari Barat</h3><p id="kompasHint">Belum aktif. Pencet Aktifkan Kompas di bawah.</p><span class="accuracy mid" id="kompasAccuracy">Akurasi: Menunggu sensor...</span><p id="gpsInfo" style="margin-top:8px">Lokasi: Mataram (kota dipilih) • Untuk akurasi maksimal, pencet Pakai GPS Saya.</p><button class="btn-gold" onclick="startCompass()"><svg class="icon" style="stroke:#121212" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-2 5-4 1 2-5z"/></svg> Aktifkan Kompas</button><button class="btn-outline" style="margin-top:8px" onclick="useGPSForQibla()">Pakai GPS Saya (Lebih Akurat)</button><button class="btn-outline" style="margin-top:8px" onclick="calibrateCompass()">Kalibrasi: Goyang HP Bentuk Angka 8</button></div>
 <div class="card"><b>Biar Akurat, Wajib Baca:</b><p>1. Jauhin HP dari magnet, speaker, casing magnet, laptop.<br>2. Letakkan HP datar, jangan miring.<br>3. Pencet Kalibrasi, goyang HP bentuk angka 8 sebanyak 3x sampai indikator jadi hijau.<br>4. Kalau masih merah, pindah tempat, jangan di deket besi / motor.</p></div>
 </div>
