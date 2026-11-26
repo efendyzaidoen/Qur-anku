@@ -1,12 +1,19 @@
 {
-  "name": "Qur-anku",
-  "short_name": "Qur-anku",
-  "start_url": ".",
+  "name": "Qur'anKu",
+  "short_name": "Qur'anKu",
+  "description": "Al-Qur'an Offline, Jadwal Sholat, Kompas Kiblat",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#065F46",
-  "theme_color": "#065F46",
+  "orientation": "portrait",
+  "background_color": "#0B3D2E",
+  "theme_color": "#0B3D2E",
   "icons": [
-    {"src": "icon-192.png","sizes": "192x192","type": "image/png"},
-    {"src": "icon-512.png","sizes": "512x512","type": "image/png"}
+    {
+      "src": "quranku-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }
