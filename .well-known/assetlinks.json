@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.efendyzaidoen.twa",
+        "sha256_cert_fingerprints": ["8E:AD:9C:C2:D0:C3:45:A6:E1:1A:9B:E2:A6:A7:38:A3:BE:85:30:86:5D:F6:34:DD:5B:53:94:8D:B4:96:1F:B2"]
+      }
+    }]
